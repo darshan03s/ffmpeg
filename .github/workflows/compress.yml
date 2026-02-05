@@ -1,11 +1,16 @@
 name: Compress FFmpeg
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   compress:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,14 +25,9 @@ jobs:
       - name: Compress Windows build
         run: 7z a -t7z -mx=9 -m0=lzma2 -md=1024m -mmt=on ffmpeg-win.7z ffmpeg-win
 
-      - name: Upload Linux archive
-        uses: actions/upload-artifact@v4
+      - name: Upload archives to GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: ffmpeg-linux
-          path: ffmpeg-linux.7z
-
-      - name: Upload Windows archive
-        uses: actions/upload-artifact@v4
-        with:
-          name: ffmpeg-win
-          path: ffmpeg-win.7z
+          files: |
+            ffmpeg-linux.7z
+            ffmpeg-win.7z
