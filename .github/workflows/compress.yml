@@ -20,8 +20,14 @@ jobs:
       - name: Compress Windows build
         run: 7z a -t7z -mx=9 -m0=lzma2 -md=1024m -mmt=on ffmpeg-win.7z ffmpeg-win
 
-      - name: Upload artifacts
+      - name: Upload Linux archive
         uses: actions/upload-artifact@v4
         with:
-          name: ffmpeg-compressed
-          path: "*.7z"
+          name: ffmpeg-linux
+          path: ffmpeg-linux.7z
+
+      - name: Upload Windows archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-win
+          path: ffmpeg-win.7z
